@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Gestão Financeira</title>
+</head>
+
+<body>
+    <header>
+        <h1>Gestão Financeira</h1>
+        <div class="menu">
+            <a href="index.html">Inicio</a>
+            <a href="historico.html">Histórico</a>
+        </div>
+    </header>
+    <main>
+        <h2>Bem-Vindo ao seu Gerenciador Financeiro</h2>
+        <p>Use o menu acima para navegar entre as páginas de controle financeiro e histórico de transações.</p>
+        <div class="dashboard">
+            <h3>Dashboard</h3>
+            <p>Resumo das suas finanças:</p>
+            <p>Mês: <select class="mes">
+                    <option value="Janeiro">Janeiro</option>
+                    <option value="Fevereiro">Fevereiro</option>
+                    <option value="Março">Março</option>
+                    <option value="Abril">Abril</option>
+                    <option value="Maio">Maio</option>
+                    <option value="Junho">Junho</option>
+                    <option value="Julho">Julho</option>
+                    <option value="Agosto">Agosto</option>
+                    <option value="Setembro">Setembro</option>
+                    <option value="Outubro">Outubro</option>
+                    <option value="Novembro">Novembro</option>
+                    <option value="Dezembro">Dezembro</option>
+                </select></p>
+            <p>Renda/Mês: <input class="saldo" type="number" required placeholder="Seus ganhos"></p>
+            <p>Gastos/Mês: <input class="gastoTotal" type="number" disabled placeholder="Seus gastos"></p>
+            <p>Saldo Final: <input class="saldoFinal" type="number" disabled placeholder="Saldo final"></p>
+        </div>
+        <div class="addGasto">
+            <h3>Adicionar Gasto</h3>
+            <input id="descricao" type="text" required placeholder="Descrição do gasto">
+            <input id="valor" type="number" required placeholder="Valor do gasto" step="0.05">
+            <button id="addGasto" class="Btn">Adicionar Gasto</button>
+            <ul id="gastoList"></ul>
+        </div>
+    </main>
+
+</body>
+
+<script src="script.js"></script>
+
+</html>
