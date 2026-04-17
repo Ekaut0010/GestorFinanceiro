@@ -4,11 +4,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fluxo | Histórico</title>
     <link rel="stylesheet" href="style.css">
-    <title>Gestão Financeira</title>
 </head>
 
 <body>
+
+    <!-- HEADER -->
+    <header class="header">
+        <h1 class="logo">FLUXO</h1>
+
+        <nav class="menu">
+            <a href="index.html">Início</a>
+            <a href="historico.html" class="active">Histórico</a>
+        </nav>
+    </header>
+
+    <!-- MAIN -->
+    <main class="container">
+
+        <!-- INTRO -->
+        <section class="intro">
+            <h2>Histórico Mensal</h2>
+            <p>Aqui você pode visualizar o histórico financeiro dos meses anteriores.</p>
+            <div class="actions">
+                <button id="limparHistorico" class="btn danger">
+                    🗑️ Apagar Histórico
+                </button>
+            </div>
+        </section>
+
+        <!-- LISTA -->
+        <section class="historico">
+            <h3>Transações registradas</h3>
+
+            <ul id="historicoList" class="lista">
+                <!-- JS renderiza aqui -->
+            </ul>
+        </section>
+
+    </main>
+
+    <script src="script.js"></script>
 </body>
 
 </html>

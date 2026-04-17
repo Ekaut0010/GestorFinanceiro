@@ -4,53 +4,90 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fluxo | Gestão Financeira</title>
     <link rel="stylesheet" href="style.css">
-    <title>Gestão Financeira</title>
 </head>
 
 <body>
-    <header>
-        <h1>FLUXO</h1>
-        <div class="menu">
-            <a href="index.html">Inicio</a>
+
+    <!-- HEADER -->
+    <header class="header">
+        <h1 class="logo">FLUXO</h1>
+
+        <nav class="menu">
+            <a href="index.html">Início</a>
             <a href="historico.html">Histórico</a>
-        </div>
+        </nav>
     </header>
-    <main>
-        <h2>Bem-Vindo ao seu Gerenciador Financeiro</h2>
-        <p>Use o menu acima para navegar entre as páginas de controle financeiro e histórico de transações.</p>
-        <div class="dashboard">
+
+    <!-- MAIN -->
+    <main class="container">
+
+        <!-- INTRO -->
+        <section class="intro">
+            <h2>Bem-vindo ao seu Gerenciador Financeiro</h2>
+            <p>Use o menu acima para navegar entre controle financeiro e histórico.</p>
+        </section>
+
+        <!-- DASHBOARD -->
+        <section class="dashboard">
             <h3>Dashboard</h3>
-            <p>Resumo das suas finanças:</p>
-            <p>Mês: <select class="mes">
-                    <option value="Janeiro">Janeiro</option>
-                    <option value="Fevereiro">Fevereiro</option>
-                    <option value="Março">Março</option>
-                    <option value="Abril">Abril</option>
-                    <option value="Maio">Maio</option>
-                    <option value="Junho">Junho</option>
-                    <option value="Julho">Julho</option>
-                    <option value="Agosto">Agosto</option>
-                    <option value="Setembro">Setembro</option>
-                    <option value="Outubro">Outubro</option>
-                    <option value="Novembro">Novembro</option>
-                    <option value="Dezembro">Dezembro</option>
-                </select></p>
-            <p>Renda/Mês: <input id="saldo" class="dashInput" type="text" required placeholder="Seus ganhos"></p>
-            <p>Gastos/Mês: <input id="gastoTotal" class="dashInput" type="text" disabled placeholder="Seus gastos"></p>
-            <p>Saldo Final: <input id="saldoFinal" class="dashInput" type="text" disabled placeholder="Saldo final"></p>
-        </div>
-        <div class="addGasto">
+
+            <div class="field">
+                <label for="mes">Mês</label>
+                <select id="mes">
+                    <option>Janeiro</option>
+                    <option>Fevereiro</option>
+                    <option>Março</option>
+                    <option>Abril</option>
+                    <option>Maio</option>
+                    <option>Junho</option>
+                    <option>Julho</option>
+                    <option>Agosto</option>
+                    <option>Setembro</option>
+                    <option>Outubro</option>
+                    <option>Novembro</option>
+                    <option>Dezembro</option>
+                </select>
+            </div>
+
+            <div class="field">
+                <label for="saldo">Renda do mês</label>
+                <input id="saldo" class="input" type="number" placeholder="Seus ganhos">
+            </div>
+
+            <div class="field">
+                <label for="gastoTotal">Gastos do mês</label>
+                <input id="gastoTotal" class="input" type="number" disabled>
+            </div>
+
+            <div class="field">
+                <label for="saldoFinal">Saldo final</label>
+                <input id="saldoFinal" class="input" type="number" disabled>
+            </div>
+        </section>
+
+        <!-- GASTOS -->
+        <section class="gastos">
             <h3>Adicionar Gasto</h3>
-            <input id="descricao" class="gastoInput" type="text" required placeholder="Descrição do gasto">
-            <input id="valor" class="gastoInput" type="text" required placeholder="Valor do gasto" step="0.05">
-            <button id="addGasto" class="Btn">Adicionar Gasto</button>
-            <ul id="gastoList"></ul>
-        </div>
+
+            <div class="gasto-form">
+                <input id="descricao" class="input" type="text" placeholder="Descrição do gasto">
+                <input id="valor" class="input" type="number" placeholder="Valor" step="0.01">
+                <button id="addGasto" class="btn primary">Adicionar</button>
+            </div>
+
+            <ul id="gastoList" class="lista"></ul>
+        </section>
+
+        <!-- FECHAR MÊS -->
+        <section class="fechar">
+            <button id="fecharMes" class="btn danger">Fechar mês</button>
+        </section>
+
     </main>
 
+    <script src="script.js"></script>
 </body>
-
-<script src="script.js"></script>
 
 </html>

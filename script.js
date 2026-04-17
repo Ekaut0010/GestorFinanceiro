@@ -1,91 +1,202 @@
-//Variaveis
-const gastoDescricao = document.getElementById("descricao");
-const gastoValor = document.getElementById("valor");
-const addGasto = document.getElementById("addGasto");
+// ====================
+// ELEMENTOS
+// ====================
+const el = {
+  descricao: document.getElementById("descricao"),
+  valor: document.getElementById("valor"),
+  addBtn: document.getElementById("addGasto"),
+  fecharMesBtn: document.getElementById("fecharMes"),
+  limparHistoricoBtn: document.getElementById("limparHistorico"),
 
-//função Enter para adicionar gasto
-addEventListener("keypress", (event) => {
-  if (event.key === "Enter") {
-    adicionarGasto();
-  }
-});
+  lista: document.getElementById("gastoList"),
+  historicoList: document.getElementById("historicoList"),
 
-// Criar Gasto
-function criarGasto(descricao, valor = parseFloat(gastoValor.value)) {
-  const gastoItem = document.createElement("li");
-  gastoItem.innerHTML = `<div class="gasto-item"><span class="texto">${descricao}</span>: R$ <span class="valorI">${valor.toFixed(2)}</span><button class="deleteBtn">Excluir</button><button class="okBtn">Paga</button></div>`;
-  document.getElementById("gastoList").appendChild(gastoItem);
+  saldo: document.getElementById("saldo"),
+  gastoTotal: document.getElementById("gastoTotal"),
+  saldoFinal: document.getElementById("saldoFinal"),
+  mes: document.getElementById("mes"),
+};
 
-  gastoDescricao.value = "";
-  gastoValor.value = "";
+// ====================
+// GASTOS
+// ====================
+function criarGasto(descricao, valor, done = false) {
+  const li = document.createElement("li");
+
+  li.innerHTML = `
+    <div class="gasto-item ${done ? "pago" : ""}">
+      <span class="texto">${descricao}</span>: 
+      R$ <span class="valorI">${Number(valor).toFixed(2)}</span>
+      <button class="deleteBtn">Excluir</button>
+      <button class="okBtn">Paga</button>
+    </div>
+  `;
+
+  el.lista?.appendChild(li);
 }
 
-//Salvar gasto
 function salvarGasto() {
-  const gastoItens = [];
+  const gastos = [];
+
   document.querySelectorAll("#gastoList li").forEach((li) => {
-    const textoI = li.querySelector(".texto").textContent;
-    const valorG = parseFloat(
-      li.querySelector(".valorI").textContent.replace("R$ ", ""),
-    );
-    gastoItens.push({ texto: textoI, valor: valorG });
+    const texto = li.querySelector(".texto").textContent;
+    const valor = Number(li.querySelector(".valorI").textContent);
+    const done = li.querySelector(".gasto-item").classList.contains("pago");
+
+    gastos.push({ texto, valor, done });
   });
-  localStorage.setItem("gastoItens", JSON.stringify(gastoItens));
+
+  localStorage.setItem("gastoItens", JSON.stringify(gastos));
 }
 
-//carregar gastos salvos
 function carregarGastos() {
-  const gastoItensC = JSON.parse(localStorage.getItem("gastoItens")) || [];
-  gastoItensC.forEach((gasto) => {
-    criarGasto(gasto.texto, gasto.valor);
-  });
-}
-//adicionar Gasto
-function adicionarGasto() {
-  const descricao = gastoDescricao.value.trim();
-  const valor = parseFloat(gastoValor.value);
+  const gastos = JSON.parse(localStorage.getItem("gastoItens")) || [];
 
-  if (descricao === "" || isNaN(valor) || valor <= 0) {
-    alert("Por favor, insira uma descrição válida e um valor positivo.");
+  gastos.forEach((g) => criarGasto(g.texto, g.valor, g.done));
+}
+
+function adicionarGasto() {
+  const descricao = el.descricao.value.trim();
+  const valor = Number(el.valor.value);
+
+  if (!descricao || isNaN(valor) || valor <= 0) {
+    alert("Preencha corretamente.");
     return;
   }
 
   criarGasto(descricao, valor);
   salvarGasto();
   somarGastos();
+
+  el.descricao.value = "";
+  el.valor.value = "";
 }
 
-//função para excluir gasto
+// ====================
+// EVENTOS LISTA (DELEGATION)
+// ====================
 document.addEventListener("click", (event) => {
   const deleteBtn = event.target.closest(".deleteBtn");
+  const okBtn = event.target.closest(".okBtn");
+
   if (deleteBtn) {
-    const gastoItem = deleteBtn.closest("li");
-    gastoItem.remove();
+    deleteBtn.closest("li").remove();
+  }
+
+  if (okBtn) {
+    okBtn.closest(".gasto-item").classList.toggle("pago");
+  }
+
+  if (deleteBtn || okBtn) {
     salvarGasto();
     somarGastos();
   }
 });
 
-//Função somar gastos
+// ====================
+// SOMA
+// ====================
 function somarGastos() {
-  const gastoItensSG = JSON.parse(localStorage.getItem("gastoItens")) || [];
-  const totalGastos = gastoItensSG.reduce(
-    (total, gasto) => total + gasto.valor,
-    0,
-  );
-  document.getElementById("gastoTotal").value = totalGastos.toFixed(2);
-  const saldo = parseFloat(document.getElementById("saldo").value);
-  if (!isNaN(saldo)) {
-    const saldoFinal = saldo - totalGastos;
-    document.getElementById("saldoFinal").value = saldoFinal.toFixed(2);
+  const gastos = JSON.parse(localStorage.getItem("gastoItens")) || [];
+
+  const total = gastos.reduce((acc, g) => acc + g.valor, 0);
+
+  if (el.gastoTotal) el.gastoTotal.value = total.toFixed(2);
+
+  const saldo = Number(el.saldo?.value);
+
+  if (!isNaN(saldo) && el.saldoFinal) {
+    el.saldoFinal.value = (saldo - total).toFixed(2);
   }
 }
-//Event Listener para o botão de adicionar gasto
-addGasto.addEventListener("click", adicionarGasto);
 
-//iniciar a aplicação carregando os gastos salvos
+// ====================
+// HISTÓRICO
+// ====================
+function salvarHistorico() {
+  if (!el.saldo || !el.gastoTotal || !el.saldoFinal || !el.mes) return;
+
+  const historico = JSON.parse(localStorage.getItem("historico")) || [];
+
+  historico.push({
+    mes: el.mes.value,
+    saldoInicial: Number(el.saldo.value) || 0,
+    gastoTotal: Number(el.gastoTotal.value) || 0,
+    saldoFinal: Number(el.saldoFinal.value) || 0,
+  });
+
+  localStorage.setItem("historico", JSON.stringify(historico));
+}
+
+function carregarHistorico() {
+  if (!el.historicoList) return;
+
+  el.historicoList.innerHTML = "";
+
+  const historico = JSON.parse(localStorage.getItem("historico")) || [];
+
+  if (historico.length === 0) {
+    el.historicoList.innerHTML = `<li style="opacity:0.6">Nenhum histórico disponível</li>`;
+    return;
+  }
+
+  historico.forEach((item) => {
+    const li = document.createElement("li");
+
+    const saldoInicial = Number(item.saldoInicial) || 0;
+    const gastoTotal = Number(item.gastoTotal) || 0;
+    const saldoFinal = Number(item.saldoFinal) || 0;
+
+    li.innerHTML = `
+      <strong>${item.mes || "Mês não definido"}</strong>:
+      Saldo Inicial: R$ ${saldoInicial.toFixed(2)} |
+      Gastos: R$ ${gastoTotal.toFixed(2)} |
+      Saldo Final: R$ ${saldoFinal.toFixed(2)}
+    `;
+
+    el.historicoList.appendChild(li);
+  });
+}
+
+function fecharMes() {
+  if (!confirm("Fechar mês?")) return;
+
+  salvarHistorico();
+
+  localStorage.removeItem("gastoItens");
+  el.lista.innerHTML = "";
+
+  if (el.gastoTotal) el.gastoTotal.value = "0.00";
+  if (el.saldoFinal) el.saldoFinal.value = "0.00";
+
+  carregarHistorico();
+}
+
+// ====================
+// 🔥 NOVO: LIMPAR HISTÓRICO
+// ====================
+function limparHistorico() {
+  if (!confirm("Apagar TODO o histórico?")) return;
+
+  localStorage.removeItem("historico");
+
+  if (el.historicoList) {
+    el.historicoList.innerHTML = `<li style="opacity:0.6">Histórico apagado</li>`;
+  }
+}
+
+// ====================
+// INIT
+// ====================
+el.addBtn?.addEventListener("click", adicionarGasto);
+el.fecharMesBtn?.addEventListener("click", fecharMes);
+el.limparHistoricoBtn?.addEventListener("click", limparHistorico);
+el.saldo?.addEventListener("input", somarGastos);
+
+window.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") adicionarGasto();
+});
+
 carregarGastos();
+carregarHistorico();
 somarGastos();
-
-//Event Listener para atualizar o saldo final quando o saldo for alterado
-document.getElementById("saldo").addEventListener("input", somarGastos);
