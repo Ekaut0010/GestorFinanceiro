@@ -10,7 +10,7 @@
 
 <body>
     <header>
-        <h1>Gestão Financeira</h1>
+        <h1>FLUXO</h1>
         <div class="menu">
             <a href="index.html">Inicio</a>
             <a href="historico.html">Histórico</a>
@@ -36,14 +36,14 @@
                     <option value="Novembro">Novembro</option>
                     <option value="Dezembro">Dezembro</option>
                 </select></p>
-            <p>Renda/Mês: <input class="saldo" type="number" required placeholder="Seus ganhos"></p>
-            <p>Gastos/Mês: <input class="gastoTotal" type="number" disabled placeholder="Seus gastos"></p>
-            <p>Saldo Final: <input class="saldoFinal" type="number" disabled placeholder="Saldo final"></p>
+            <p>Renda/Mês: <input id="saldo" class="dashInput" type="text" required placeholder="Seus ganhos"></p>
+            <p>Gastos/Mês: <input id="gastoTotal" class="dashInput" type="text" disabled placeholder="Seus gastos"></p>
+            <p>Saldo Final: <input id="saldoFinal" class="dashInput" type="text" disabled placeholder="Saldo final"></p>
         </div>
         <div class="addGasto">
             <h3>Adicionar Gasto</h3>
-            <input id="descricao" type="text" required placeholder="Descrição do gasto">
-            <input id="valor" type="number" required placeholder="Valor do gasto" step="0.05">
+            <input id="descricao" class="gastoInput" type="text" required placeholder="Descrição do gasto">
+            <input id="valor" class="gastoInput" type="text" required placeholder="Valor do gasto" step="0.05">
             <button id="addGasto" class="Btn">Adicionar Gasto</button>
             <ul id="gastoList"></ul>
         </div>
