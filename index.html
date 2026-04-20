@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fluxo | Gestão Financeira</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 
@@ -14,67 +16,119 @@
     <header class="header">
         <h1 class="logo">FLUXO</h1>
 
-        <nav class="menu">
+        <nav class="menu" id="menu">
             <a href="index.html">Início</a>
             <a href="historico.html">Histórico</a>
+            <button class="theme-toggle" id="themeToggle">
+                <span class="toggle-label">☀️ Tema claro</span>
+                <span class="toggle-pill"></span>
+            </button>
         </nav>
+
+        <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu">☰</button>
     </header>
 
     <!-- MAIN -->
     <main class="container">
 
         <!-- INTRO -->
-        <section class="intro">
+        <section class="intro hidden-intro">
             <h2>Bem-vindo ao seu Gerenciador Financeiro</h2>
             <p>Use o menu acima para navegar entre controle financeiro e histórico.</p>
         </section>
 
         <!-- DASHBOARD -->
         <section class="dashboard">
-            <h3>Dashboard</h3>
 
-            <div class="field">
-                <label for="mes">Mês</label>
-                <select id="mes">
-                    <option>Janeiro</option>
-                    <option>Fevereiro</option>
-                    <option>Março</option>
-                    <option>Abril</option>
-                    <option>Maio</option>
-                    <option>Junho</option>
-                    <option>Julho</option>
-                    <option>Agosto</option>
-                    <option>Setembro</option>
-                    <option>Outubro</option>
-                    <option>Novembro</option>
-                    <option>Dezembro</option>
-                </select>
+            <h3 class="section-title hidden-title" data-type="dashboard">
+                Dashboard
+            </h3>
+
+            <!-- CARDS -->
+            <div class="cards">
+                <div class="card" data-type="saldo">
+                    <span class="card-label">Saldo Final</span>
+                    <strong id="cardSaldoFinal">R$ 0,00</strong>
+                </div>
+
+                <div class="card" data-type="renda">
+                    <span class="card-label">Renda do Mês</span>
+                    <strong id="cardRenda">R$ 0,00</strong>
+                </div>
+
+                <div class="card" data-type="gastos">
+                    <span class="card-label">Gastos do Mês</span>
+                    <strong id="cardGastos">R$ 0,00</strong>
+                </div>
             </div>
 
-            <div class="field">
-                <label for="saldo">Renda do mês</label>
-                <input id="saldo" class="input" type="number" placeholder="Seus ganhos">
+            <!-- FORM DASHBOARD -->
+            <div class="dashboard-form">
+
+                <div class="field">
+                    <label for="mes">Mês</label>
+                    <div class="select-wrapper">
+                        <select id="mes" class="input select">
+                            <option>Janeiro</option>
+                            <option>Fevereiro</option>
+                            <option>Março</option>
+                            <option>Abril</option>
+                            <option>Maio</option>
+                            <option>Junho</option>
+                            <option>Julho</option>
+                            <option>Agosto</option>
+                            <option>Setembro</option>
+                            <option>Outubro</option>
+                            <option>Novembro</option>
+                            <option>Dezembro</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label for="saldo">Renda do mês</label>
+                    <input id="saldo" class="input input-edit" type="number" placeholder="Seus ganhos">
+                </div>
+
+                <div class="field">
+                    <label for="gastoTotal">Gastos do mês</label>
+                    <input id="gastoTotal" class="input input-read" type="number" disabled>
+                </div>
+
+                <div class="field">
+                    <label for="saldoFinal">Saldo final</label>
+                    <input id="saldoFinal" class="input input-result" type="number" disabled>
+                </div>
+                <section class="grafico">
+                    <h3 class="section-title">Gastos por Categoria</h3>
+                    <canvas id="graficoGastos"></canvas>
+                </section>
             </div>
 
-            <div class="field">
-                <label for="gastoTotal">Gastos do mês</label>
-                <input id="gastoTotal" class="input" type="number" disabled>
-            </div>
-
-            <div class="field">
-                <label for="saldoFinal">Saldo final</label>
-                <input id="saldoFinal" class="input" type="number" disabled>
-            </div>
         </section>
 
         <!-- GASTOS -->
         <section class="gastos">
-            <h3>Adicionar Gasto</h3>
+            <h3 class="section-title" data-type="gastos">Adicionar Gasto</h3>
 
             <div class="gasto-form">
                 <input id="descricao" class="input" type="text" placeholder="Descrição do gasto">
-                <input id="valor" class="input" type="number" placeholder="Valor" step="0.01">
-                <button id="addGasto" class="btn primary">Adicionar</button>
+
+                <select id="categoria" class="input">
+                    <option>Alimentação</option>
+                    <option>Transporte</option>
+                    <option>Lazer</option>
+                    <option>Contas</option>
+                    <option>Saúde</option>
+                    <option>Educação</option>
+                    <option>Outros</option>
+                </select>
+
+                <input id="valor" class="input" type="number" placeholder="R$ 0,00" step="0.01">
+
+                <button id="addGasto" class="btn primary">
+                    + Adicionar
+                </button>
             </div>
 
             <ul id="gastoList" class="lista"></ul>
@@ -86,7 +140,7 @@
         </section>
 
     </main>
-
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="script.js"></script>
 </body>
 

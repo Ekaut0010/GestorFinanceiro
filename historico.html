@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fluxo | Histórico</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 
@@ -14,10 +16,16 @@
     <header class="header">
         <h1 class="logo">FLUXO</h1>
 
-        <nav class="menu">
+        <nav class="menu" id="menu">
             <a href="index.html">Início</a>
             <a href="historico.html" class="active">Histórico</a>
+            <button class="theme-toggle" id="themeToggle">
+                <span class="toggle-label">☀️ Tema claro</span>
+                <span class="toggle-pill"></span>
+            </button>
         </nav>
+
+        <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu">☰</button>
     </header>
 
     <!-- MAIN -->
@@ -25,18 +33,25 @@
 
         <!-- INTRO -->
         <section class="intro">
-            <h2>Histórico Mensal</h2>
-            <p>Aqui você pode visualizar o histórico financeiro dos meses anteriores.</p>
-            <div class="actions">
-                <button id="limparHistorico" class="btn danger">
-                    🗑️ Apagar Histórico
-                </button>
+            <div class="intro-header">
+                <div>
+                    <h2>Histórico Mensal</h2>
+                    <p>Acompanhe seus resultados financeiros ao longo do tempo.</p>
+                </div>
+
+                <div class="actions">
+                    <button id="limparHistorico" class="btn danger">
+                        🗑️ Apagar Histórico
+                    </button>
+                </div>
             </div>
         </section>
 
         <!-- LISTA -->
         <section class="historico">
-            <h3>Transações registradas</h3>
+            <h3 class="section-title" data-type="gastos">
+                Transações registradas
+            </h3>
 
             <ul id="historicoList" class="lista">
                 <!-- JS renderiza aqui -->
